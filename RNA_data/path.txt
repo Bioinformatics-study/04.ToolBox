@@ -1,1 +1,1 @@
-(node03) /media/node03-HDD01/YEJ/RNA_data
+(node03) /media/node03-HDD01/GSE116229/RNA_data
