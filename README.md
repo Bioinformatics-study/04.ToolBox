@@ -1,2 +1,2 @@
-# SRA_download
-Downloading SRA data
+# Code repository for NGS analysis
+NGS ToolBox
