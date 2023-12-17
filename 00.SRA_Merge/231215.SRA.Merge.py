@@ -33,10 +33,11 @@ for sample in SRA_WGBS.keys():
     else:
         Sample = ''.join(SRA_WGBS[sample])
 
-        if os.path.exists(f'{Sample}_1.fastq') and os.path.exists(f'{Sample}_2.fastq'):
+        if os.path.exists(f'{Sample}_1.fastq'):
             command = f'mv {Sample}_1.fastq {Prefix}_1.fastq'
             os.system(command)
-
+            
+        if os.path.exists(f'{Sample}_2.fastq'):
             command = f'mv {Sample}_2.fastq {Prefix}_2.fastq'
             os.system(command)
 # -------------------------------------------------------#
