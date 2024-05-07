@@ -11,7 +11,7 @@ with open('Sample.txt', 'r') as samp:
         line = line.strip()
         with open(f'{line}/Run.sh', 'w') as note1:
             note1.write("#!/bin/bash" + '\n' + \
-                       "#SBATCH -J WGBS" + '\n' + \
+                        "#SBATCH -J WGBS" + '\n' + \
                         "#SBATCH -o Log.%j.out" + '\n' + \
                         f"#SBATCH --nodelist={Set_node}" + '\n' + \
                         "#SBATCH -n 2" + '\n'*2 + \

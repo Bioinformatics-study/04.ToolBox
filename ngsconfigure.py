@@ -70,7 +70,7 @@ for n in range(Sample.shape[0]):
                      '\n' +
                      f"python3 {Code}" + '\n')
 
-        with open(f"{folder_name}.batchconfig.txt", "w") as write_batch_config:
+        with open(f"{folder_name}_batchconfig.txt", "w") as write_batch_config:
           for keys in BATCH.keys():
             if keys != 'CPU' :
                 write_batch_config.write(f"{keys}={BATCH[keys]}\n")
