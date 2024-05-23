@@ -1,10 +1,11 @@
 import pandas as pd
-import os 
+import os
 import sys
 #---------------------------------------------------------------------------------------#
+os.chdir('/labmed/01.ALL/02.RNA')
 path = os.getcwd()
 BATCH = {}
-with open(f"{path}/batchconfig.txt", "r") as read : 
+with open(f"{path}/batchconfig.txt", "r") as read :
   for line in read:
     line = line.strip('\n').strip().split("=")
     key = line[0]
@@ -45,8 +46,12 @@ Cpu = int(BATCH['CPU'])
 Allocated_CPU = int(Cpu / Sample.shape[0])
 if Allocated_CPU < 1:
         raise ValueError("\033[91m" + "ValueError: Allocated CPU is less than 1" + "\033[0m")
-CPU = [Allocated_CPU] * Sample.shape[0]
-if Sample.shape[0] > 1 :
+
+if Sample.shape[0] == 1 :
+    CPU = [Allocated_CPU] * Sample.shape[0]
+    if BATCH['Node'] != 'node04' :
+        CPU = list(map(lambda x: x*2, CPU))
+elif Sample.shape[0] > 1 :
         extra_cpu = int(Cpu % Sample.shape[0])
         i = 0
         for i in range(extra_cpu) :
@@ -62,13 +67,13 @@ for n in range(Sample.shape[0]):
         os.chdir(folder_name)
         with open("Run.sh", "w") as note:
           note.write("#!/bin/bash" + '\n' +
-                     f"#SBATCH -J " + folder_name + "\n" +
-                     f"#SBATCH -o Log.%j.out" + '\n' +
-                     f"#SBATCH --time=UNLIMITED" + '\n' +
-                     f"#SBATCH --nodelist={BATCH['Node']}" +'\n' +
-                     f"#SBATCH -n {Cpu}" + '\n' +
-                     '\n' +
-                     f"python3 {Code}" + '\n')
+                    f"#SBATCH -J " + BATCH['Run_type'] + '.' + folder_name + "\n" +
+                    f"#SBATCH -o Log.%j.out" + '\n' +
+                    f"#SBATCH --time=UNLIMITED" + '\n' +
+                    f"#SBATCH --nodelist={BATCH['Node']}" +'\n' +
+                    f"#SBATCH -n {Cpu}" + '\n' +
+                    '\n' +
+                    f"python3 {Code}" + '\n')
 
         with open(f"{folder_name}_batchconfig.txt", "w") as write_batch_config:
           for keys in BATCH.keys():
@@ -80,10 +85,11 @@ for n in range(Sample.shape[0]):
           write_batch_config.write(f"sample_dir={total_sample_path_list}\n")
 
         os.chdir("..")
-        
+
 #---------------------------------------------------------------------------------------#
 with open("Total_run.sh", "w") as note:
     for n in range(Sample.shape[0]):
         folder_name = str(Sample.loc[n,0]).strip()
         note.write(f"cd {path}/{folder_name}; sbatch Run.sh" + '\n')
 #---------------------------------------------------------------------------------------#
+
