@@ -2,7 +2,6 @@ import pandas as pd
 import os
 import sys
 #---------------------------------------------------------------------------------------#
-os.chdir('/labmed/01.ALL/02.RNA')
 path = os.getcwd()
 BATCH = {}
 with open(f"{path}/batchconfig.txt", "r") as read :
