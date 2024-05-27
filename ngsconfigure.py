@@ -51,6 +51,7 @@ if Sample.shape[0] == 1 :
     if BATCH['Node'] != 'node04' :
         CPU = list(map(lambda x: x*2, CPU))
 elif Sample.shape[0] > 1 :
+        CPU = [Allocated_CPU] * Sample.shape[0]
         extra_cpu = int(Cpu % Sample.shape[0])
         i = 0
         for i in range(extra_cpu) :
