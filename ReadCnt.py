@@ -30,13 +30,12 @@ with open(f'{Name[0]}_ReadsPerGene.out.tab', 'r') as f:
             df2 = df2[['ENSG_ID',f'{column_list[int(BATCH["select_a_column"])-1]}']]
             df2.columns = ['ENSG_ID', f'{name}']
             df = pd.merge(df,df2,on='ENSG_ID',how='outer')
-#     df.to_csv('/labmed/01.ALL/02.RNA/Total_ReadCnt.txt',sep='\t', index = False)
 #-----------------------------------------------------------------------------#
 with open(f'/media/src/{BATCH["Ref_ver"]}/00.RNA/STARidx/geneInfo.tab', 'r') as f:
     lines = [line for line in f if line.startswith('E')]
     column_list = ['ENSG_ID','GeneSymbol','Feature']
     gene_df = pd.DataFrame([line.strip().split('\t') for line in lines], columns=column_list)
     matrix = pd.merge(df,gene_df, on='ENSG_ID', how = 'left')
-    columns = ['GeneSymbol'] + Name.tolist()
+    columns = ['ENSG_ID','GeneSymbol'] + Name.tolist()
     matrix = matrix[columns]
     matrix.to_csv('/labmed/01.ALL/02.RNA/Total_ReadCnt.txt',sep='\t', index = False)
